@@ -1,0 +1,10 @@
+[project]
+name = "zenith-agent"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "nats-py>=2.0",
+    "jinja2>=3.0",
+    "langgraph>=0.2",
+]
