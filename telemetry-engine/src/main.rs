@@ -1,6 +1,7 @@
 mod health;
 mod ingest;
 mod models;
+mod ws;
 
 use axum::{routing, Router};
 use tracing::info;
@@ -26,9 +27,11 @@ async fn main() -> anyhow::Result<()> {
     let app = Router::new()
         .route("/metrics", routing::post(ingest::ingest_metrics))
         .route("/healthz", routing::get(health::healthz))
+        .route("/ws", routing::get(ws::ws_handler))
+        .layer(tower_http::cors::CorsLayer::permissive())
         .with_state(state);
 
-    let addr = "0.0.0.0:3000";
+    let addr = "0.0.0.0:3001";
     info!(addr, "telemetry engine listening");
     let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, app).await?;
